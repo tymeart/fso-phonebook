@@ -2,24 +2,38 @@ import React, { useState} from 'react';
 import './App.css';
 
 function App() {
-  const [person, setPersons] = useState([
-    { name: 'Tiffany Lam' }
+  const [persons, setPersons] = useState([
+    { name: 'Tiffany Lam'}
   ]);
   const [newName, setNewName] = useState('');
+
+  const nameList = persons.map((person, i) => <li key={i}>{person.name}</li>);
+
+  const handleNameChange = (event) => {
+    setNewName(event.target.value);
+  }
+
+  const addName = (event) => {
+    event.preventDefault();
+    setPersons(persons.concat({ name: newName }))
+    setNewName('');
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
-      <form>
+      <form onSubmit={addName}>
         <div>
           <label>Name: </label>
-          <input />
-        </div>
-        <div>
+          <input value={newName} onChange={handleNameChange} />
           <button>Add</button>
         </div>
       </form>
 
       <h2>Numbers</h2>
+      <ul>
+        {nameList}
+      </ul>
     </div>
   );
 }
