@@ -15,8 +15,13 @@ function App() {
 
   const addName = (event) => {
     event.preventDefault();
-    setPersons(persons.concat({ name: newName }))
-    setNewName('');
+    const existingEntry = persons.find(person => person.name === newName);
+    if (existingEntry) {
+      alert(`${newName} is already in the phonebook.`);
+    } else {
+      setPersons(persons.concat({ name: newName }));
+      setNewName('');
+    }
   }
 
   return (
