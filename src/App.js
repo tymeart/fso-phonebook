@@ -6,38 +6,50 @@ function App() {
     { name: 'Tiffany Lam'}
   ]);
   const [newName, setNewName] = useState('');
+  const [newNumber, setNewNumber] = useState('');
 
-  const nameList = persons.map((person, i) => <li key={i}>{person.name}</li>);
+  const personsList = persons.map((person, i) => <li key={i}>{person.name} {person.number}</li>);
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
   }
 
-  const addName = (event) => {
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value);
+  }
+
+  const addPerson = (event) => {
     event.preventDefault();
     const existingEntry = persons.find(person => person.name === newName);
     if (existingEntry) {
       alert(`${newName} is already in the phonebook.`);
     } else {
-      setPersons(persons.concat({ name: newName }));
+      setPersons(persons.concat({ name: newName, number: newNumber }));
       setNewName('');
+      setNewNumber('');
     }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addName}>
+      <form onSubmit={addPerson}>
         <div>
-          <label>Name: </label>
-          <input value={newName} onChange={handleNameChange} />
+          <div>
+            <label>Name: </label>
+            <input value={newName} onChange={handleNameChange} />
+          </div>
+          <div>
+            <label>Phone number: </label>
+            <input value={newNumber} onChange={handleNumberChange} />
+          </div>
           <button>Add</button>
         </div>
       </form>
 
       <h2>Numbers</h2>
       <ul>
-        {nameList}
+        {personsList}
       </ul>
     </div>
   );
