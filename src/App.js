@@ -35,9 +35,15 @@ function App() {
     if (existingEntry) {
       alert(`${newName} is already in the phonebook.`);
     } else {
-      setPersons(persons.concat({ name: newName, number: newNumber }));
-      setNewName('');
-      setNewNumber('');
+      const newPerson = {name: newName, number: newNumber};
+      axios
+        .post('http://localhost:3001/persons', newPerson)
+        .then(response => {
+          console.log(response)
+          setPersons(persons.concat(newPerson.data));
+          setNewName('');
+          setNewNumber('');
+        })
     }
   }
 
