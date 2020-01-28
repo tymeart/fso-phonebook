@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import personService from './services/persons';
 import List from './List';
 import './App.css';
 
@@ -10,8 +10,8 @@ function App() {
   const [searchChar, setSearchChar] = useState('');
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
+    personService
+      .getAll()
       .then(response => {
         setPersons(response.data);
       });
@@ -36,8 +36,8 @@ function App() {
       alert(`${newName} is already in the phonebook.`);
     } else {
       const newPerson = {name: newName, number: newNumber};
-      axios
-        .post('http://localhost:3001/persons', newPerson)
+      personService
+        .create(newPerson)
         .then(response => {
           console.log(response)
           setPersons(persons.concat(newPerson.data));
@@ -47,6 +47,7 @@ function App() {
     }
   }
 
+  // cannot read property id of undefined
   const personsToShow = searchChar === '' ?
     persons.map((person) => <li key={person.id}>{person.name} {person.number}</li>) :
     persons.filter(person => person.name.indexOf(searchChar) > -1)
