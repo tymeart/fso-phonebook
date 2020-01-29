@@ -47,11 +47,36 @@ function App() {
     }
   }
 
+  const handleDelete = (id) => {
+    if (window.confirm('Are you sure you want to delete this entry?')) {
+      personService
+        .deletePerson(id)
+        .then(response => {
+          console.log(response);
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    };
+  }
+
   // cannot read property id of undefined
   const personsToShow = searchChar === '' ?
-    persons.map((person) => <li key={person.id}>{person.name} {person.number}</li>) :
+    persons.map((person) => {
+      return (
+        <li key={person.id}>
+          {person.name} {person.number} 
+          <button onClick={() => handleDelete(person.id)}>Delete</button>
+        </li>
+      )
+      }) :
     persons.filter(person => person.name.indexOf(searchChar) > -1)
-      .map((foundPerson) => <li key={foundPerson.id}>{foundPerson.name} {foundPerson.number}</li>);
+      .map((foundPerson) => {
+        return (
+          <li key={foundPerson.id}>
+            {foundPerson.name} {foundPerson.number} 
+            <button onClick={() => handleDelete(foundPerson.id)}>Delete</button>
+          </li>
+        )
+      });
 
   return (
     <div>
