@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import personService from './services/persons';
-import List from './List';
+import ListItem from './ListItem';
 import Notification from './Notification';
 import './App.css';
 
@@ -65,20 +65,22 @@ function App() {
   const personsToShow = searchChar === '' ?
     persons.map(person => {
       return (
-        <li key={person.id}>
-          {person.name} {person.number} 
-          <button onClick={() => handleDelete(person.id)}>Delete</button>
-        </li>
-      )
-      }) :
+        <ListItem
+          key={person.id} 
+          person={person} 
+          handleDelete={handleDelete} 
+        />
+      );
+    }) :
     persons.filter(person => person.name.indexOf(searchChar) > -1)
       .map(foundPerson => {
         return (
-          <li key={foundPerson.id}>
-            {foundPerson.name} {foundPerson.number} 
-            <button onClick={() => handleDelete(foundPerson.id)}>Delete</button>
-          </li>
-        )
+          <ListItem 
+            key={foundPerson.id} 
+            person={foundPerson} 
+            handleDelete={handleDelete} 
+          />
+        );
       });
 
   return (
@@ -104,7 +106,9 @@ function App() {
       </form>
 
       <h2>Numbers</h2>
-      <List persons={personsToShow}/>
+      <ul>
+        {personsToShow}
+      </ul>
     </div>
   );
 }
