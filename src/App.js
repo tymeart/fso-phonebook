@@ -40,7 +40,7 @@ function App() {
         .create(newPerson)
         .then(response => {
           console.log(response)
-          setPersons(persons.concat(newPerson.data));
+          setPersons(persons.concat(newPerson));
           setNewName('');
           setNewNumber('');
         })
@@ -58,9 +58,8 @@ function App() {
     };
   }
 
-  // cannot read property id of undefined
   const personsToShow = searchChar === '' ?
-    persons.map((person) => {
+    persons.map(person => {
       return (
         <li key={person.id}>
           {person.name} {person.number} 
@@ -69,7 +68,7 @@ function App() {
       )
       }) :
     persons.filter(person => person.name.indexOf(searchChar) > -1)
-      .map((foundPerson) => {
+      .map(foundPerson => {
         return (
           <li key={foundPerson.id}>
             {foundPerson.name} {foundPerson.number} 
