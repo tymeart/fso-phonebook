@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.notification {
+  color: green;
+  border: 1px solid green;
+  font-size: 20px;
+  width: 30%;
+}

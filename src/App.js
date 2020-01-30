@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import personService from './services/persons';
 import List from './List';
+import Notification from './Notification';
 import './App.css';
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [searchChar, setSearchChar] = useState('');
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     personService
@@ -43,6 +45,8 @@ function App() {
           setPersons(persons.concat(newPerson));
           setNewName('');
           setNewNumber('');
+          setMessage(`${newPerson.name} has been added.`)
+          setTimeout(() => {setMessage(null)}, 5000);
         })
     }
   }
@@ -80,6 +84,7 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
+      {message === null ? null : <Notification message={message} />}
       <div>
         <label>Search names: </label>
         <input value={searchChar} onChange={handleSearchChange} />
