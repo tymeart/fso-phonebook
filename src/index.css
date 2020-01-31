@@ -12,9 +12,16 @@ code {
     monospace;
 }
 
-.notification {
+.success {
   color: green;
   border: 1px solid green;
+  font-size: 20px;
+  width: 30%;
+}
+
+.error {
+  color: red;
+  border: 1px solid red;
   font-size: 20px;
   width: 30%;
 }

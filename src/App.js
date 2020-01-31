@@ -10,6 +10,7 @@ function App() {
   const [newNumber, setNewNumber] = useState('');
   const [searchChar, setSearchChar] = useState('');
   const [message, setMessage] = useState(null);
+  const [notificationType, setNotificationType] = useState('success');
 
   useEffect(() => {
     personService
@@ -35,7 +36,29 @@ function App() {
     event.preventDefault();
     const existingEntry = persons.find(person => person.name === newName);
     if (existingEntry) {
-      alert(`${newName} is already in the phonebook.`);
+      if (existingEntry.number !== newNumber) {
+        if (window.confirm(`${newName} is already in the phonebook. Replace the old number with new one?`)) {
+          const updatedPerson = { ...existingEntry, number: newNumber};
+          personService
+            .update(existingEntry.id, updatedPerson)
+            .then(response => {
+              console.log(response)
+              setPersons(persons.filter(person => person.id !== updatedPerson.id).concat(updatedPerson));
+              setNewName('');
+              setNewNumber('');
+              setNotificationType('success');
+              setMessage(`${updatedPerson.name}'s number has been updated.`);
+              setTimeout(() => { setMessage(null) }, 5000);
+            })
+            .catch(error => {
+              setNotificationType('error');
+              setMessage('Oops! This person has already been deleted.');
+              setTimeout(() => {setMessage(null)}, 5000);
+            });
+        }
+      } else {
+        alert(`${newName} is already in the phonebook.`);
+      }
     } else {
       const newPerson = {name: newName, number: newNumber};
       personService
@@ -44,7 +67,8 @@ function App() {
           setPersons(persons.concat(response.data));
           setNewName('');
           setNewNumber('');
-          setMessage(`${newPerson.name} has been added.`)
+          setNotificationType('success');
+          setMessage(`${newPerson.name} has been added.`);
           setTimeout(() => {setMessage(null)}, 5000);
         })
     }
@@ -84,8 +108,8 @@ function App() {
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      {message === null ? null : <Notification message={message} />}
+      <h1>Phonebook</h1>
+      {message === null ? null : <Notification type={notificationType} message={message} />}
       <div>
         <label>Search names: </label>
         <input value={searchChar} onChange={handleSearchChange} />
