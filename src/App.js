@@ -41,8 +41,7 @@ function App() {
       personService
         .create(newPerson)
         .then(response => {
-          console.log(response)
-          setPersons(persons.concat(newPerson));
+          setPersons(persons.concat(response.data));
           setNewName('');
           setNewNumber('');
           setMessage(`${newPerson.name} has been added.`)
